@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GreenCoinMovil.Views.AchievementsPage"
+              Title="Logros"
+             Shell.NavBarIsVisible="True">
+
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#E8F5E8" Offset="0.0"/>
+                <GradientStop Color="#F0F8F0" Offset="0.5"/>
+                <GradientStop Color="#E8F5E8" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <ScrollView>
+            <VerticalStackLayout Spacing="25" Padding="20">
+
+                <!-- Header -->
+                <StackLayout Spacing="10">
+                    <Label Text="Mis Logros" 
+                           FontSize="24" 
+                           FontAttributes="Bold"
+                           TextColor="#2d3436"/>
+                    <Label Text="{Binding LogrosDesbloqueados, StringFormat='Has desbloqueado {0} de {1} logros'}" 
+                           FontSize="14" 
+                           TextColor="#636e72"/>
+                </StackLayout>
+
+                <!-- Barra de progreso general -->
+                <Frame BackgroundColor="White" 
+                       CornerRadius="12" 
+                       Padding="20"
+                       HasShadow="False">
+                    <VerticalStackLayout Spacing="15">
+                        <Label Text="Progreso General" 
+                               FontSize="16" 
+                               FontAttributes="Bold"
+                               TextColor="#2d3436"/>
+
+                        <Frame BackgroundColor="#dfe6e9" 
+                               HeightRequest="12" 
+                               CornerRadius="6"
+                               Padding="0">
+                            <Frame BackgroundColor="#00b894" 
+                                   HeightRequest="12" 
+                                   CornerRadius="6"
+                                   HorizontalOptions="Start"
+                                   WidthRequest="{Binding ProgresoLogros}"/>
+                        </Frame>
+
+                        <Label Text="{Binding ProgresoTexto}" 
+                               FontSize="12" 
+                               TextColor="#636e72"
+                               HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Logros Disponibles -->
+                <StackLayout Spacing="15">
+                    <Label Text="Logros Disponibles" 
+                           FontSize="18" 
+                           FontAttributes="Bold"
+                           TextColor="#2d3436"/>
+
+                    <CollectionView ItemsSource="{Binding Logros}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame BackgroundColor="White" 
+                                       CornerRadius="12" 
+                                       Padding="15"
+                                       HasShadow="False"
+                                       Margin="0,0,0,10">
+                                    <Grid ColumnDefinitions="Auto,*,Auto" 
+                                          ColumnSpacing="15">
+
+                                        <!-- Icono del logro -->
+                                        <Frame Grid.Column="0"
+                                               BackgroundColor="{Binding ColorFondo}" 
+                                               WidthRequest="50" 
+                                               HeightRequest="50" 
+                                               CornerRadius="25"
+                                               Padding="0">
+                                            <Label Text="{Binding Icono}" 
+                                                   FontSize="20"
+                                                   HorizontalOptions="Center"
+                                                   VerticalOptions="Center"/>
+                                        </Frame>
+
+                                        <!-- Información del logro -->
+                                        <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                            <Label Text="{Binding Nombre}" 
+                                                   FontSize="14" 
+                                                   FontAttributes="Bold"
+                                                   TextColor="#2d3436"/>
+                                            <Label Text="{Binding Descripcion}" 
+                                                   FontSize="12" 
+                                                   TextColor="#636e72"
+                                                   LineBreakMode="TailTruncation"/>
+                                            <Label Text="{Binding ProgresoTexto}" 
+                                                   FontSize="10" 
+                                                   TextColor="#b2bec3"/>
+                                        </VerticalStackLayout>
+
+                                        <!-- Estado del logro -->
+                                        <Frame Grid.Column="2"
+                                               BackgroundColor="{Binding ColorEstado}" 
+                                               WidthRequest="30" 
+                                               HeightRequest="30" 
+                                               CornerRadius="15"
+                                               Padding="0">
+                                            <Label Text="{Binding IconoEstado}" 
+                                                   FontSize="14"
+                                                   HorizontalOptions="Center"
+                                                   VerticalOptions="Center"
+                                                   TextColor="White"/>
+                                        </Frame>
+                                    </Grid>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

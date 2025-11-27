@@ -1,0 +1,545 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GreenCoinMovil.Views.DashboardPage"
+             xmlns:viewmodels="clr-namespace:GreenCoinMovil.ViewModels"
+
+             xmlns:Models="clr-namespace:GreenCoinMovil.Models"
+              Title="Perfil"
+             Shell.NavBarIsVisible="True">
+
+    <ScrollView>
+        <Grid>
+            <!-- Fondo con degradado -->
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#F9FAFB" Offset="0.0"/>
+                    <GradientStop Color="#FFFFFF" Offset="0.5"/>
+                    <GradientStop Color="#F9FAFB" Offset="1.0"/>
+                </LinearGradientBrush>
+            </Grid.Background>
+
+            <VerticalStackLayout Spacing="20" Padding="20">
+
+                <!-- Tarjeta de Bienvenida CON BOTÓN DE CERRAR SESIÓN -->
+                <Frame BackgroundColor="#10B981" 
+                       CornerRadius="12" 
+                       Padding="20"
+                       HasShadow="True">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <VerticalStackLayout Grid.Column="0" Spacing="10">
+                            <Label Text="¡Bienvenido de nuevo!" 
+                                   FontSize="20" 
+                                   FontAttributes="Bold"
+                                   TextColor="White"/>
+                            <Label Text="{Binding WelcomeMessage}" 
+                                   FontSize="14"
+                                   TextColor="White"
+                                   LineBreakMode="WordWrap"/>
+                        </VerticalStackLayout>
+
+                        <Button Grid.Column="1"
+                                Text="Ver recompensas" 
+                                BackgroundColor="Transparent"
+                                TextColor="White"
+                                BorderColor="White"
+                                BorderWidth="1"
+                                CornerRadius="8"
+                                HeightRequest="35"
+                                HorizontalOptions="End"
+                                VerticalOptions="Center"
+                                Margin="0,0,10,0"/>
+
+                        <!-- ✅ NUEVO BOTÓN DE CERRAR SESIÓN -->
+                        <Button Grid.Column="2"
+                                Text="🚪" 
+                                BackgroundColor="Transparent"
+                                TextColor="White"
+                                BorderColor="White"
+                                BorderWidth="1"
+                                CornerRadius="8"
+                                WidthRequest="35"
+                                HeightRequest="35"
+                                HorizontalOptions="End"
+                                VerticalOptions="Center"
+                                Command="{Binding CerrarSesionCommand}"
+                                ToolTipProperties.Text="Cerrar sesión"/>
+                    </Grid>
+                </Frame>
+
+                <Grid ColumnDefinitions="*,2*" ColumnSpacing="15">
+
+                    <!-- Columna Izquierda - Perfil y QR -->
+                    <VerticalStackLayout Spacing="15" Grid.Column="0">
+
+                        <!-- Tarjeta de Perfil -->
+                        <Frame BackgroundColor="White" 
+                               CornerRadius="12" 
+                               Padding="20"
+                               HasShadow="True"
+                               BorderColor="#E5E7EB">
+                            <VerticalStackLayout Spacing="15" HorizontalOptions="Center">
+
+                                <!-- Avatar -->
+                                <Frame BackgroundColor="#10B981" 
+                                       WidthRequest="120" 
+                                       HeightRequest="120" 
+                                       CornerRadius="60"
+                                       Padding="0"
+                                       HorizontalOptions="Center">
+                                    <Image Source="{Binding Usuario.AvatarUrl}" 
+                                           Aspect="AspectFill"
+                                           WidthRequest="112"
+                                           HeightRequest="112"/>
+                                </Frame>
+
+                                <!-- Nombre y Nivel -->
+                                <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
+                                    <Label Text="{Binding Usuario.Nombre}" 
+                                           FontSize="18" 
+                                           FontAttributes="Bold"
+                                           TextColor="#111827"
+                                           HorizontalOptions="Center"/>
+
+                                    <Frame BackgroundColor="#D1FAE5" 
+                                           Padding="8,4" 
+                                           CornerRadius="12"
+                                           HasShadow="False"
+                                           HorizontalOptions="Center">
+                                        <Label Text="{Binding NivelActual}" 
+                                               FontSize="12"
+                                               TextColor="#047857"
+                                               FontAttributes="Bold"/>
+                                    </Frame>
+                                </VerticalStackLayout>
+
+                                <!-- Dirección -->
+                                <HorizontalStackLayout Spacing="5" HorizontalOptions="Center">
+                                    <Label Text="📍" 
+                                           FontSize="12"/>
+                                    <Label Text="{Binding Usuario.Direccion, StringFormat='{0}'}" 
+                                           FontSize="12" 
+                                           TextColor="#6B7280"
+                                           LineBreakMode="TailTruncation"/>
+                                </HorizontalStackLayout>
+
+                                <!-- Botón Editar Perfil -->
+                                <Button Text="Editar perfil" 
+                                        Command="{Binding NavigateToProfileCommand}"
+                                        BackgroundColor="Transparent"
+                                        TextColor="#10B981"
+                                        BorderColor="#10B981"
+                                        BorderWidth="1"
+                                        CornerRadius="8"
+                                        HeightRequest="35"/>
+                            </VerticalStackLayout>
+                        </Frame>
+
+                        <!-- Tarjeta de Código QR -->
+                        <Frame BackgroundColor="White" 
+                               CornerRadius="12" 
+                               Padding="20"
+                               HasShadow="True"
+                               BorderColor="#E5E7EB">
+                            <VerticalStackLayout Spacing="15">
+                                <HorizontalStackLayout Spacing="10">
+                                    <Label Text="📱" 
+                                           FontSize="16"/>
+                                    <Label Text="Mi código QR" 
+                                           FontSize="16" 
+                                           FontAttributes="Bold"
+                                           TextColor="#111827"/>
+                                </HorizontalStackLayout>
+
+                                <Label Text="Escanea en centros de reciclaje para ganar puntos" 
+                                       FontSize="12" 
+                                       TextColor="#6B7280"
+                                       LineBreakMode="WordWrap"/>
+
+                                <!-- Placeholder QR -->
+                                <Frame BackgroundColor="#F3F4F6" 
+                                       HeightRequest="160" 
+                                       CornerRadius="12"
+                                       Padding="20"
+                                       BorderColor="#D1D5DB"
+                                       HasShadow="False"
+                                       HorizontalOptions="Center">
+                                    <VerticalStackLayout Spacing="10" 
+                                                         HorizontalOptions="Center" 
+                                                         VerticalOptions="Center">
+                                        <Label Text="📱" 
+                                               FontSize="32"
+                                               HorizontalOptions="Center"/>
+                                        <Label Text="Código personal" 
+                                               FontSize="12" 
+                                               TextColor="#6B7280"
+                                               HorizontalOptions="Center"/>
+                                    </VerticalStackLayout>
+                                </Frame>
+
+                                <Button Text="Registrar reciclaje"
+                                        Command="{Binding RegisterRecyclingCommand}"
+                                        BackgroundColor="#10B981"
+                                        TextColor="White"
+                                        FontAttributes="Bold"
+                                        CornerRadius="8"
+                                        HeightRequest="40"/>
+                            </VerticalStackLayout>
+                        </Frame>
+
+                        <!-- ✅ NUEVA TARJETA DE CONFIGURACIÓN CON BOTÓN DE CERRAR SESIÓN -->
+                        <Frame BackgroundColor="White" 
+                               CornerRadius="12" 
+                               Padding="20"
+                               HasShadow="True"
+                               BorderColor="#E5E7EB">
+                            <VerticalStackLayout Spacing="15">
+                                <HorizontalStackLayout Spacing="10">
+                                    <Label Text="⚙️" 
+                                           FontSize="16"/>
+                                    <Label Text="Configuración" 
+                                           FontSize="16" 
+                                           FontAttributes="Bold"
+                                           TextColor="#111827"/>
+                                </HorizontalStackLayout>
+
+                                <Button Text="🔓 Cerrar Sesión" 
+                                        Command="{Binding CerrarSesionCommand}"
+                                        BackgroundColor="Transparent"
+                                        TextColor="#EF4444"
+                                        BorderColor="#EF4444"
+                                        BorderWidth="1"
+                                        CornerRadius="8"
+                                        HeightRequest="40"
+                                        FontAttributes="Bold"/>
+
+                                <Label Text="Cierra tu sesión de forma segura" 
+                                       FontSize="12" 
+                                       TextColor="#6B7280"
+                                       HorizontalOptions="Center"/>
+                            </VerticalStackLayout>
+                        </Frame>
+                    </VerticalStackLayout>
+
+                    <!-- Columna Derecha - Estadísticas -->
+                    <VerticalStackLayout Spacing="15" Grid.Column="1">
+
+                        <!-- Estadísticas en Grid -->
+                        <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10" RowDefinitions="Auto,Auto">
+
+                            <!-- Puntos Acumulados -->
+                            <Frame Grid.Row="0" Grid.Column="0"
+                                   BackgroundColor="White" 
+                                   CornerRadius="12" 
+                                   Padding="15"
+                                   HasShadow="True"
+                                   BorderColor="#E5E7EB">
+                                <VerticalStackLayout Spacing="10" HorizontalOptions="Center">
+                                    <Label Text="🪙" 
+                                           FontSize="24"
+                                           HorizontalOptions="Center"/>
+                                    <Label Text="{Binding PuntosTotales}" 
+                                           FontSize="20" 
+                                           FontAttributes="Bold"
+                                           TextColor="#047857"
+                                           HorizontalOptions="Center"/>
+                                    <Label Text="Puntos Acumulados" 
+                                           FontSize="12" 
+                                           TextColor="#6B7280"
+                                           HorizontalOptions="Center"/>
+                                </VerticalStackLayout>
+                            </Frame>
+
+                            <!-- Posición en Ranking -->
+                            <Frame Grid.Row="0" Grid.Column="1"
+                                   BackgroundColor="White" 
+                                   CornerRadius="12" 
+                                   Padding="15"
+                                   HasShadow="True"
+                                   BorderColor="#E5E7EB">
+                                <VerticalStackLayout Spacing="10" HorizontalOptions="Center">
+                                    <Label Text="🏆" 
+                                           FontSize="24"
+                                           HorizontalOptions="Center"/>
+                                    <Label Text="-" 
+                                           FontSize="20" 
+                                           FontAttributes="Bold"
+                                           TextColor="#047857"
+                                           HorizontalOptions="Center"/>
+                                    <Label Text="Posición en Ranking" 
+                                           FontSize="12" 
+                                           TextColor="#6B7280"
+                                           HorizontalOptions="Center"/>
+                                </VerticalStackLayout>
+                            </Frame>
+
+                            <!-- Nivel Actual -->
+                            <Frame Grid.Row="0" Grid.Column="2"
+                                   BackgroundColor="White" 
+                                   CornerRadius="12" 
+                                   Padding="15"
+                                   HasShadow="True"
+                                   BorderColor="#E5E7EB">
+                                <VerticalStackLayout Spacing="10" HorizontalOptions="Center">
+                                    <Label Text="📈" 
+                                           FontSize="24"
+                                           HorizontalOptions="Center"/>
+                                    <Label Text="{Binding NivelActual}" 
+                                           FontSize="20" 
+                                           FontAttributes="Bold"
+                                           TextColor="#047857"
+                                           HorizontalOptions="Center"/>
+                                    <Label Text="Nivel Actual" 
+                                           FontSize="12" 
+                                           TextColor="#6B7280"
+                                           HorizontalOptions="Center"/>
+                                </VerticalStackLayout>
+                            </Frame>
+
+                            <!-- Total Reciclajes -->
+                            <Frame Grid.Row="1" Grid.Column="0"
+                                   BackgroundColor="White" 
+                                   CornerRadius="12" 
+                                   Padding="15"
+                                   HasShadow="True"
+                                   BorderColor="#E5E7EB">
+                                <VerticalStackLayout Spacing="10" HorizontalOptions="Center">
+                                    <Label Text="♻️" 
+                                           FontSize="24"
+                                           HorizontalOptions="Center"/>
+                                    <Label Text="{Binding TotalReciclajes}" 
+                                           FontSize="20" 
+                                           FontAttributes="Bold"
+                                           TextColor="#047857"
+                                           HorizontalOptions="Center"/>
+                                    <Label Text="Reciclajes" 
+                                           FontSize="12" 
+                                           TextColor="#6B7280"
+                                           HorizontalOptions="Center"/>
+                                </VerticalStackLayout>
+                            </Frame>
+
+                            <!-- Logros -->
+                            <Frame Grid.Row="1" Grid.Column="1"
+                                   BackgroundColor="White" 
+                                   CornerRadius="12" 
+                                   Padding="15"
+                                   HasShadow="True"
+                                   BorderColor="#E5E7EB">
+                                <VerticalStackLayout Spacing="10" HorizontalOptions="Center">
+                                    <Label Text="🎖️" 
+                                           FontSize="24"
+                                           HorizontalOptions="Center"/>
+                                    <Label Text="{Binding LogrosDesbloqueados}" 
+                                           FontSize="20" 
+                                           FontAttributes="Bold"
+                                           TextColor="#047857"
+                                           HorizontalOptions="Center"/>
+                                    <Label Text="Logros" 
+                                           FontSize="12" 
+                                           TextColor="#6B7280"
+                                           HorizontalOptions="Center">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding ViewAllAchievementsCommand}"/>
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                </VerticalStackLayout>
+                            </Frame>
+
+                            <!-- Días Activos -->
+                            <Frame Grid.Row="1" Grid.Column="2"
+                                   BackgroundColor="White" 
+                                   CornerRadius="12" 
+                                   Padding="15"
+                                   HasShadow="True"
+                                   BorderColor="#E5E7EB">
+                                <VerticalStackLayout Spacing="10" HorizontalOptions="Center">
+                                    <Label Text="📅" 
+                                           FontSize="24"
+                                           HorizontalOptions="Center"/>
+                                    <Label Text="{Binding DiasActivos}" 
+                                           FontSize="20" 
+                                           FontAttributes="Bold"
+                                           TextColor="#047857"
+                                           HorizontalOptions="Center"/>
+                                    <Label Text="Días activos" 
+                                           FontSize="12" 
+                                           TextColor="#6B7280"
+                                           HorizontalOptions="Center"/>
+                                </VerticalStackLayout>
+                            </Frame>
+                        </Grid>
+
+                        <!-- Actividad Reciente y Logros -->
+                        <Grid ColumnDefinitions="2*,1*" ColumnSpacing="15">
+
+                            <!-- Actividad Reciente -->
+                            <Frame Grid.Column="0"
+                                   BackgroundColor="White" 
+                                   CornerRadius="12" 
+                                   Padding="20"
+                                   HasShadow="True"
+                                   BorderColor="#E5E7EB">
+                                <VerticalStackLayout Spacing="15">
+                                    <HorizontalStackLayout Spacing="10">
+                                        <Label Text="📊" 
+                                               FontSize="16"/>
+                                        <Label Text="Actividad Reciente" 
+                                               FontSize="16" 
+                                               FontAttributes="Bold"
+                                               TextColor="#111827"/>
+                                    </HorizontalStackLayout>
+
+                                    <CollectionView ItemsSource="{Binding ActividadesRecientes}">
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Padding="10" 
+                                                      ColumnDefinitions="Auto,*,Auto"
+                                                      RowDefinitions="Auto,Auto">
+
+                                                    <!-- Icono -->
+                                                    <Frame Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"
+                                                           BackgroundColor="#D1FAE5" 
+                                                           WidthRequest="40" 
+                                                           HeightRequest="40" 
+                                                           CornerRadius="20"
+                                                           Padding="0"
+                                                           VerticalOptions="Center">
+                                                        <Label Text="♻️" 
+                                                               FontSize="16"
+                                                               HorizontalOptions="Center"
+                                                               VerticalOptions="Center"/>
+                                                    </Frame>
+
+                                                    <!-- Descripción -->
+                                                    <Label Grid.Row="0" Grid.Column="1"
+                                                           Text="{Binding Descripcion}" 
+                                                           FontSize="14" 
+                                                           FontAttributes="Bold"
+                                                           TextColor="#111827"
+                                                           VerticalOptions="End"/>
+
+                                                    <!-- Fecha -->
+                                                    <Label Grid.Row="1" Grid.Column="1"
+                                                           Text="{Binding FechaFormateada}" 
+                                                           FontSize="12" 
+                                                           TextColor="#6B7280"
+                                                           VerticalOptions="Start"/>
+
+                                                    <!-- Puntos -->
+                                                    <Label Grid.Row="0" Grid.Column="2" Grid.RowSpan="2"
+                                                           Text="{Binding PuntosTexto}" 
+                                                           FontSize="14" 
+                                                           FontAttributes="Bold"
+                                                           TextColor="#10B981"
+                                                           VerticalOptions="Center"
+                                                           HorizontalOptions="End"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
+
+                                    <Button Text="Ver todo el historial"
+                                            Command="{Binding ViewAllHistoryCommand}"
+                                            BackgroundColor="Transparent"
+                                            TextColor="#10B981"
+                                            BorderColor="Transparent"
+                                            HorizontalOptions="Center"/>
+                                </VerticalStackLayout>
+                            </Frame>
+
+                            <!-- Mis Logros -->
+                            <Frame Grid.Column="1"
+                                   BackgroundColor="White" 
+                                   CornerRadius="12" 
+                                   Padding="20"
+                                   HasShadow="True"
+                                   BorderColor="#E5E7EB">
+                                <VerticalStackLayout Spacing="15">
+                                    <HorizontalStackLayout Spacing="10">
+                                        <Label Text="🎖️" 
+                                               FontSize="16"/>
+                                        <Label Text="Mis Logros" 
+                                               FontSize="16" 
+                                               FontAttributes="Bold"
+                                               TextColor="#111827"/>
+                                    </HorizontalStackLayout>
+
+                                    <Label Text="{Binding LogrosTexto}" 
+                                           FontSize="12" 
+                                           TextColor="#6B7280"
+                                           LineBreakMode="WordWrap"/>
+
+                                    <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" 
+                                          RowSpacing="10" ColumnSpacing="10">
+
+                                        <!-- Logro 1 - Desbloqueado -->
+                                        <Frame Grid.Row="0" Grid.Column="0"
+                                               BackgroundColor="#F9FAFB" 
+                                               CornerRadius="8" 
+                                               Padding="10"
+                                               HasShadow="False">
+                                            <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
+                                                <Label Text="👤" 
+                                                       FontSize="20"
+                                                       HorizontalOptions="Center"/>
+                                                <Label Text="Nuevo Miembro" 
+                                                       FontSize="10" 
+                                                       FontAttributes="Bold"
+                                                       TextColor="#10B981"
+                                                       HorizontalOptions="Center"/>
+                                                <Label Text="Hoy" 
+                                                       FontSize="8" 
+                                                       TextColor="#6B7280"
+                                                       HorizontalOptions="Center"/>
+                                            </VerticalStackLayout>
+                                        </Frame>
+
+                                        <!-- Logro 2 - Bloqueado -->
+                                        <Frame Grid.Row="0" Grid.Column="1"
+                                               BackgroundColor="#F9FAFB" 
+                                               CornerRadius="8" 
+                                               Padding="10"
+                                               HasShadow="False"
+                                               Opacity="0.5">
+                                            <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
+                                                <Label Text="♻️" 
+                                                       FontSize="20"
+                                                       HorizontalOptions="Center"/>
+                                                <Label Text="Primer Reciclaje" 
+                                                       FontSize="10" 
+                                                       FontAttributes="Bold"
+                                                       TextColor="#6B7280"
+                                                       HorizontalOptions="Center"/>
+                                                <Label Text="Por desbloquear" 
+                                                       FontSize="8" 
+                                                       TextColor="#6B7280"
+                                                       HorizontalOptions="Center"/>
+                                            </VerticalStackLayout>
+                                        </Frame>
+                                    </Grid>
+
+                                    <Button Text="Ver todos los logros"
+                                            Command="{Binding ViewAllAchievementsCommand}"
+                                            BackgroundColor="Transparent"
+                                            TextColor="#10B981"
+                                            BorderColor="Transparent"
+                                            HorizontalOptions="Center"/>
+                                </VerticalStackLayout>
+                            </Frame>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Grid>
+            </VerticalStackLayout>
+        </Grid>
+    </ScrollView>
+</ContentPage>

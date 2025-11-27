@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GreenCoinMovil.Views.HistoryPage"
+             Title="Historial de Reciclajes"
+             Shell.NavBarIsVisible="True">
+
+    <Grid>
+        <!-- Fondo de gradiente -->
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#E8F5E8" Offset="0.0"/>
+                <GradientStop Color="#F0F8F0" Offset="0.5"/>
+                <GradientStop Color="#E8F5E8" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <!-- Contenido principal -->
+        <ScrollView>
+            <VerticalStackLayout Spacing="20" Padding="20">
+
+                <!-- Header -->
+                <StackLayout Spacing="10">
+                    <Label Text="📊 Mi Historial de Reciclajes"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="#2d3436"
+                           HorizontalOptions="Center"/>
+
+                    <Label Text="Aquí puedes ver todos tus reciclajes y su estado actual"
+                           FontSize="14"
+                           TextColor="#636e72"
+                           HorizontalOptions="Center"
+                           HorizontalTextAlignment="Center"/>
+                </StackLayout>
+
+                <!-- Filtros -->
+                <Frame BackgroundColor="White"
+                       CornerRadius="12"
+                       Padding="15"
+                       HasShadow="True">
+                    <VerticalStackLayout Spacing="15">
+                        <Label Text="🔍 Filtrar por estado:"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="#2d3436"/>
+
+                        <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
+                            <Button Grid.Column="0"
+                                    Text="✅ Todos"
+                                    Command="{Binding FilterAllCommand}"
+                                    BackgroundColor="#00b894"
+                                    TextColor="White"
+                                    CornerRadius="8"
+                                    HeightRequest="40"
+                                    FontSize="12"/>
+
+                            <Button Grid.Column="1"
+                                    Text="⏳ Pendientes"
+                                    Command="{Binding FilterPendingCommand}"
+                                    BackgroundColor="#74b9ff"
+                                    TextColor="White"
+                                    CornerRadius="8"
+                                    HeightRequest="40"
+                                    FontSize="12"/>
+
+                            <Button Grid.Column="2"
+                                    Text="❌ Rechazados"
+                                    Command="{Binding FilterRejectedCommand}"
+                                    BackgroundColor="#d63031"
+                                    TextColor="White"
+                                    CornerRadius="8"
+                                    HeightRequest="40"
+                                    FontSize="12"/>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Estadísticas -->
+                <Frame BackgroundColor="White"
+                       CornerRadius="12"
+                       Padding="15"
+                       HasShadow="True"
+                       IsVisible="{Binding HasRecyclingHistory}">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="📈 Estadísticas"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="#2d3436"/>
+
+                        <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
+                            <VerticalStackLayout Grid.Column="0" Spacing="5" HorizontalOptions="Center">
+                                <Label Text="{Binding TotalReciclajes}"
+                                       FontSize="24"
+                                       FontAttributes="Bold"
+                                       TextColor="#00b894"
+                                       HorizontalOptions="Center"/>
+                                <Label Text="Total"
+                                       FontSize="12"
+                                       TextColor="#636e72"
+                                       HorizontalOptions="Center"/>
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Grid.Column="1" Spacing="5" HorizontalOptions="Center">
+                                <Label Text="{Binding ReciclajesAprobados}"
+                                       FontSize="24"
+                                       FontAttributes="Bold"
+                                       TextColor="#00b894"
+                                       HorizontalOptions="Center"/>
+                                <Label Text="Aprobados"
+                                       FontSize="12"
+                                       TextColor="#636e72"
+                                       HorizontalOptions="Center"/>
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Grid.Column="2" Spacing="5" HorizontalOptions="Center">
+                                <Label Text="{Binding TotalPuntos}"
+                                       FontSize="24"
+                                       FontAttributes="Bold"
+                                       TextColor="#0984e3"
+                                       HorizontalOptions="Center"/>
+                                <Label Text="Puntos"
+                                       FontSize="12"
+                                       TextColor="#636e72"
+                                       HorizontalOptions="Center"/>
+                            </VerticalStackLayout>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Lista de reciclajes -->
+                <Frame BackgroundColor="White"
+                       CornerRadius="12"
+                       Padding="15"
+                       HasShadow="True">
+                    <VerticalStackLayout Spacing="15">
+                        <Label Text="📋 Lista de Reciclajes"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="#2d3436"/>
+
+                        <!-- Lista vacía -->
+                        <Label Text="No tienes reciclajes registrados aún."
+                               FontSize="14"
+                               TextColor="#636e72"
+                               HorizontalOptions="Center"
+                               IsVisible="{Binding IsEmptyList}"/>
+
+                        <!-- CollectionView de reciclajes -->
+                        <CollectionView ItemsSource="{Binding ReciclajesFiltrados}"
+                                        IsVisible="{Binding HasRecyclingHistory}"
+                                        SelectionMode="None">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Frame BackgroundColor="{Binding BackgroundColor}"
+                                           CornerRadius="8"
+                                           Padding="12"
+                                           Margin="0,0,0,8"
+                                           HasShadow="False">
+                                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+
+                                            <!-- Icono de estado -->
+                                            <Frame Grid.Column="0"
+                                                   BackgroundColor="{Binding StatusColor}"
+                                                   WidthRequest="40"
+                                                   HeightRequest="40"
+                                                   CornerRadius="20"
+                                                   Padding="0">
+                                                <Label Text="{Binding StatusIcon}"
+                                                       FontSize="16"
+                                                       HorizontalOptions="Center"
+                                                       VerticalOptions="Center"/>
+                                            </Frame>
+
+                                            <!-- Información del reciclaje -->
+                                            <VerticalStackLayout Grid.Column="1" Spacing="4">
+                                                <Label Text="{Binding MaterialNombre}"
+                                                       FontSize="14"
+                                                       FontAttributes="Bold"
+                                                       TextColor="#2d3436"/>
+                                                <Label Text="{Binding FechaFormateada}"
+                                                       FontSize="12"
+                                                       TextColor="#636e72"/>
+                                                <Label Text="{Binding EstadoTexto}"
+                                                       FontSize="11"
+                                                       TextColor="{Binding StatusColor}"/>
+                                            </VerticalStackLayout>
+
+                                            <!-- Puntos -->
+                                            <VerticalStackLayout Grid.Column="2" Spacing="2" HorizontalOptions="End">
+                                                <Label Text="{Binding PuntosTexto}"
+                                                       FontSize="14"
+                                                       FontAttributes="Bold"
+                                                       TextColor="{Binding PuntosColor}"
+                                                       HorizontalOptions="End"/>
+                                                <Label Text="{Binding CantidadTexto}"
+                                                       FontSize="10"
+                                                       TextColor="#636e72"
+                                                       HorizontalOptions="End"/>
+                                            </VerticalStackLayout>
+                                        </Grid>
+                                    </Frame>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Botón de actualizar -->
+                <Button Text="🔄 Actualizar"
+                        Command="{Binding RefreshCommand}"
+                        BackgroundColor="#6c5ce7"
+                        TextColor="White"
+                        CornerRadius="8"
+                        HeightRequest="45"
+                        FontSize="14"
+                        HorizontalOptions="Fill"/>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Indicador de carga -->
+        <ActivityIndicator IsVisible="{Binding IsBusy}"
+                          IsRunning="{Binding IsBusy}"
+                          Color="#00b894"
+                          HorizontalOptions="Center"
+                          VerticalOptions="Center"
+                          WidthRequest="80"
+                          HeightRequest="80"/>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:converters="clr-namespace:GreenCoinMovil.Converters"
+             x:Class="GreenCoinMovil.Views.AdminDashboardPage"
+             x:Name="adminPage"
+             Title="Panel de Administración"
+             BackgroundColor="#F5F5F5">
+
+    <RefreshView IsRefreshing="{Binding IsLoading}"
+                 Command="{Binding CargarReciclajesPendientesCommand}">
+
+        <ScrollView>
+            <StackLayout Padding="20" Spacing="15">
+
+                <!-- Header -->
+                <Frame BackgroundColor="#2E7D32" Padding="20" CornerRadius="15" HasShadow="True">
+                    <StackLayout>
+                        <Label Text="🛠️ Panel de Administrador" 
+                               FontSize="24" 
+                               TextColor="White" 
+                               FontAttributes="Bold"
+                               HorizontalOptions="Center"/>
+
+                        <Label Text="{Binding WelcomeMessage}" 
+                               FontSize="16" 
+                               TextColor="White"
+                               HorizontalOptions="Center"
+                               HorizontalTextAlignment="Center"/>
+                    </StackLayout>
+                </Frame>
+
+                <!-- Estadísticas Rápidas -->
+                <Frame BackgroundColor="White" Padding="15" CornerRadius="10" HasShadow="True">
+                    <Grid ColumnDefinitions="*, *" RowDefinitions="Auto, Auto" ColumnSpacing="10">
+                        <StackLayout Grid.Column="0">
+                            <Label Text="📋 Pendientes" 
+                                   FontSize="14" 
+                                   TextColor="#666"/>
+                            <Label Text="{Binding PendientesCount}" 
+                                   FontSize="24" 
+                                   TextColor="#2E7D32"
+                                   FontAttributes="Bold"
+                                   HorizontalTextAlignment="Center"/>
+                        </StackLayout>
+
+                        <StackLayout Grid.Column="1">
+                            <Label Text="⏳ Por Validar" 
+                                   FontSize="14" 
+                                   TextColor="#666"/>
+                            <Label Text="{Binding PorValidarCount}" 
+                                   FontSize="24" 
+                                   TextColor="#FF9800"
+                                   FontAttributes="Bold"
+                                   HorizontalTextAlignment="Center"/>
+                        </StackLayout>
+                    </Grid>
+                </Frame>
+
+                <!-- Mensaje de Error -->
+                <Label Text="{Binding ErrorMessage}"
+                       IsVisible="{Binding ErrorMessage, Converter={StaticResource StringToBoolConverter}}"
+                       TextColor="Red"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       Margin="0,10"/>
+
+                <!-- Lista de Reciclajes Pendientes -->
+                <Frame BackgroundColor="White" Padding="0" CornerRadius="10" HasShadow="True">
+                    <StackLayout>
+                        <!-- Header de la lista -->
+                        <StackLayout BackgroundColor="#2E7D32" Padding="15,10">
+                            <Label Text="📋 Reciclajes Pendientes de Validación" 
+                                   FontSize="18" 
+                                   FontAttributes="Bold" 
+                                   TextColor="White"
+                                   HorizontalOptions="Center"/>
+                            <Label Text="Revisa las fotos y aprueba o rechaza cada envío" 
+                                   FontSize="12" 
+                                   TextColor="White"
+                                   HorizontalOptions="Center"/>
+                        </StackLayout>
+
+                        <!-- Loading Indicator -->
+                        <StackLayout IsVisible="{Binding IsLoading}" 
+                                    Padding="20"
+                                    HorizontalOptions="Center">
+                            <ActivityIndicator IsVisible="{Binding IsLoading}" 
+                                              IsRunning="{Binding IsLoading}"
+                                              HorizontalOptions="Center"
+                                              Color="#2E7D32"/>
+                            <Label Text="Cargando reciclajes..." 
+                                   FontSize="14" 
+                                   TextColor="#666"
+                                   HorizontalOptions="Center"/>
+                        </StackLayout>
+
+                        <!-- Mensaje cuando no hay datos -->
+                        <StackLayout IsVisible="{Binding IsEmptyList}" 
+                                    Padding="40" 
+                                    HorizontalOptions="Center">
+                            <Label Text="🎉 ¡Excelente!" 
+                                   FontSize="20" 
+                                   FontAttributes="Bold"
+                                   TextColor="#2E7D32"
+                                   HorizontalOptions="Center"/>
+                            <Label Text="No hay reciclajes pendientes de validación" 
+                                   FontSize="16" 
+                                   TextColor="#666"
+                                   HorizontalOptions="Center"/>
+                            <Label Text="Todos los envíos han sido procesados" 
+                                   FontSize="14" 
+                                   TextColor="#999"
+                                   HorizontalOptions="Center"/>
+                        </StackLayout>
+
+                        <!-- Lista de Reciclajes -->
+                        <CollectionView ItemsSource="{Binding ReciclajesPendientes}"
+                                       SelectionMode="None"
+                                       IsVisible="{Binding IsEmptyList, Converter={StaticResource InverseBoolConverter}}">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Frame Margin="10,5" Padding="0" CornerRadius="10" HasShadow="True" BackgroundColor="White">
+                                        <Grid RowDefinitions="Auto, Auto, Auto, Auto">
+
+                                            <!-- ✅ CORREGIDO: Contenedor único para la imagen -->
+                                            <Grid Grid.Row="0">
+                                                <!-- Imagen del Material -->
+                                                <Image Source="{Binding ImagenUrl}"
+                                                       Aspect="AspectFill"
+                                                       HeightRequest="200"
+                                                       BackgroundColor="LightGray">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer 
+                                                            Command="{Binding Source={x:Reference adminPage}, Path=BindingContext.VerDetallesReciclajeCommand}"
+                                                            CommandParameter="{Binding Id}"/>
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+
+                                                <!-- Badge del Material - Ahora está sobre la imagen -->
+                                                <Frame BackgroundColor="#CC2E7D32" 
+                                                       Padding="10,5" 
+                                                       CornerRadius="20"
+                                                       HorizontalOptions="Start" 
+                                                       VerticalOptions="Start" 
+                                                       Margin="10">
+                                                    <Label Text="{Binding MaterialNombre}" 
+                                                           TextColor="White" 
+                                                           FontAttributes="Bold"
+                                                           FontSize="12"/>
+                                                </Frame>
+                                            </Grid>
+
+                                            <!-- Información del Usuario -->
+                                            <StackLayout Grid.Row="1" Padding="15" Spacing="8">
+                                                <Label Text="{Binding UsuarioNombre, StringFormat='👤 {0}'}" 
+                                                       TextColor="#333" FontSize="14" FontAttributes="Bold"/>
+
+                                                <Grid ColumnDefinitions="*, *">
+                                                    <Label Grid.Column="0" 
+                                                           Text="{Binding Fecha, StringFormat='📅 {0:dd/MM/yyyy}'}" 
+                                                           TextColor="#666" FontSize="12"/>
+                                                    <Label Grid.Column="1" 
+                                                           Text="{Binding Cantidad, StringFormat='⚖️ {0} kg'}" 
+                                                           TextColor="#666" FontSize="12"/>
+                                                </Grid>
+                                            </StackLayout>
+
+                                            <!-- Observaciones -->
+                                            <Frame Grid.Row="2" 
+                                                   BackgroundColor="#E3F2FD" 
+                                                   Padding="10" 
+                                                   Margin="15,0,15,0"
+                                                   CornerRadius="5"
+                                                   IsVisible="{Binding Observaciones, Converter={StaticResource StringToBoolConverter}}">
+                                                <Label Text="{Binding Observaciones, StringFormat='💬 {0}'}" 
+                                                       TextColor="#1976D2" 
+                                                       FontSize="12"
+                                                       FontAttributes="Italic"/>
+                                            </Frame>
+
+                                            <!-- Botones de Acción -->
+                                            <Grid Grid.Row="3" 
+                                                  ColumnDefinitions="*,*" 
+                                                  Padding="15,10,15,15" 
+                                                  ColumnSpacing="10">
+                                                <Button Grid.Column="0" 
+                                                        Text="❌ Rechazar" 
+                                                        Command="{Binding Source={x:Reference adminPage}, Path=BindingContext.RechazarReciclajeCommand}"
+                                                        CommandParameter="{Binding Id}"
+                                                        BackgroundColor="#FF5252" 
+                                                        TextColor="White" 
+                                                        CornerRadius="8"
+                                                        FontAttributes="Bold"
+                                                        HeightRequest="45"/>
+
+                                                <Button Grid.Column="1" 
+                                                        Text="✅ Aprobar" 
+                                                        Command="{Binding Source={x:Reference adminPage}, Path=BindingContext.AprobarReciclajeCommand}"
+                                                        CommandParameter="{Binding Id}"
+                                                        BackgroundColor="#4CAF50" 
+                                                        TextColor="White" 
+                                                        CornerRadius="8"
+                                                        FontAttributes="Bold"
+                                                        HeightRequest="45"/>
+                                            </Grid>
+                                        </Grid>
+                                    </Frame>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </StackLayout>
+                </Frame>
+
+                <!-- Botón de Logout -->
+                <Button Text="🚪 Cerrar Sesión" 
+                        BackgroundColor="#757575"
+                        TextColor="White"
+                        CornerRadius="10"
+                        HeightRequest="50"
+                        FontAttributes="Bold"
+                        Command="{Binding CerrarSesionCommand}"
+                        Margin="0,20,0,0"/>
+
+            </StackLayout>
+        </ScrollView>
+    </RefreshView>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:StringToBoolConverter x:Key="StringToBoolConverter" />
+            <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+</ContentPage>

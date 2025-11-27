@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:GreenCoinMovil.ViewModels"
+             xmlns:converters="clr-namespace:GreenCoinMovil.Converters"
+             x:Class="GreenCoinMovil.Views.RegisterPage"
+             Title="Crear Cuenta"
+             Shell.NavBarIsVisible="False">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:StringToBoolConverter x:Key="StringToBoolConverter" />
+            <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#E8F5E8" Offset="0.0"/>
+            <GradientStop Color="#F0F8F0" Offset="0.5"/>
+            <GradientStop Color="#E8F5E8" Offset="1.0"/>
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout Spacing="20" Padding="30">
+
+                <!-- Logo y Encabezado -->
+                <StackLayout Spacing="10" HorizontalOptions="Center" Margin="0,20,0,10">
+                    <Frame BackgroundColor="#00b894" 
+                           WidthRequest="60" 
+                           HeightRequest="60" 
+                           CornerRadius="30"
+                           HorizontalOptions="Center"
+                           HasShadow="False">
+                        <Label Text="♻️" 
+                               FontSize="30"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"
+                               TextColor="White"/>
+                    </Frame>
+
+                    <Label Text="Green Coin"
+                           TextColor="#00b894" 
+                           FontSize="28" 
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"/>
+
+                    <Label Text="Únete a nuestra comunidad ecológica"
+                           TextColor="#636e72" 
+                           FontSize="14" 
+                           HorizontalOptions="Center"/>
+                </StackLayout>
+
+                <!-- Indicador de Error -->
+                <Frame BackgroundColor="#ffeaa7" 
+                       CornerRadius="8" 
+                       Padding="15" 
+                       IsVisible="{Binding ErrorMessage, Converter={StaticResource StringToBoolConverter}}">
+                    <Label Text="{Binding ErrorMessage}"
+                           TextColor="#d63031" 
+                           FontSize="14"
+                           HorizontalOptions="Center"/>
+                </Frame>
+
+                <!-- Sección: Información Personal -->
+                <StackLayout Spacing="15">
+                    <Label Text="Información Personal" 
+                           TextColor="#2d3436" 
+                           FontSize="16" 
+                           FontAttributes="Bold"/>
+
+                    <!-- 1. Nombre -->
+                    <Frame BackgroundColor="White" BorderColor="#b2bec3" CornerRadius="10" Padding="0" HasShadow="False">
+                        <Entry Placeholder="Nombre completo" 
+                               Text="{Binding Nombre}" 
+                               Keyboard="Text"
+                               BackgroundColor="Transparent"
+                               
+                               PlaceholderColor="#636e72"
+                               TextColor="#2d3436"
+                               FontSize="16"/>
+                    </Frame>
+
+                    <!-- 2. Email -->
+                    <Frame BackgroundColor="White" BorderColor="#b2bec3" CornerRadius="10" Padding="0" HasShadow="False">
+                        <Entry Placeholder="Correo Electrónico" 
+                               Text="{Binding Email}" 
+                               Keyboard="Email"
+                               BackgroundColor="Transparent"
+                               
+                               PlaceholderColor="#636e72"
+                               TextColor="#2d3436"
+                               FontSize="16"/>
+                    </Frame>
+
+                    <!-- 3. Teléfono -->
+                    <Frame BackgroundColor="White" BorderColor="#b2bec3" CornerRadius="10" Padding="0" HasShadow="False">
+                        <Entry Placeholder="Teléfono" 
+                               Text="{Binding Telefono}" 
+                               Keyboard="Telephone"
+                               BackgroundColor="Transparent"
+                               
+                               PlaceholderColor="#636e72"
+                               TextColor="#2d3436"
+                               FontSize="16"/>
+                    </Frame>
+
+                    <!-- 4. Dirección -->
+                    <Frame BackgroundColor="White" BorderColor="#b2bec3" CornerRadius="10" Padding="0" HasShadow="False">
+                        <Entry Placeholder="Dirección (Calle, Ciudad)" 
+                               Text="{Binding Direccion}" 
+                               Keyboard="Text"
+                               BackgroundColor="Transparent"
+                               
+                               PlaceholderColor="#636e72"
+                               TextColor="#2d3436"
+                               FontSize="16"/>
+                    </Frame>
+                </StackLayout>
+
+                <!-- Sección: Seguridad -->
+                <StackLayout Spacing="15">
+                    <Label Text="Seguridad" 
+                           TextColor="#2d3436" 
+                           FontSize="16" 
+                           FontAttributes="Bold"/>
+
+                    <!-- 5. Contraseña -->
+                    <Frame BackgroundColor="White" BorderColor="#b2bec3" CornerRadius="10" Padding="0" HasShadow="False">
+                        <Entry Placeholder="Contraseña (mínimo 6 caracteres)" 
+                               Text="{Binding Password}" 
+                               IsPassword="True"
+                               BackgroundColor="Transparent"
+                               
+                               PlaceholderColor="#636e72"
+                               TextColor="#2d3436"
+                               FontSize="16"/>
+                    </Frame>
+
+                    <!-- 6. Confirmar Contraseña -->
+                    <Frame BackgroundColor="White" BorderColor="#b2bec3" CornerRadius="10" Padding="0" HasShadow="False">
+                        <Entry Placeholder="Confirmar Contraseña" 
+                               Text="{Binding ConfirmPassword}" 
+                               IsPassword="True"
+                               BackgroundColor="Transparent"
+                               
+                               PlaceholderColor="#636e72"
+                               TextColor="#2d3436"
+                               FontSize="16"/>
+                    </Frame>
+
+                    <Label Text="La contraseña debe tener al menos 6 caracteres"
+                           TextColor="#636e72" 
+                           FontSize="12"
+                           Margin="10,0,0,0"/>
+                </StackLayout>
+
+                <!-- Sección: Términos y Condiciones -->
+                <StackLayout Spacing="10">
+                    <Label Text="Términos y Condiciones" 
+                           TextColor="#2d3436" 
+                           FontSize="16" 
+                           FontAttributes="Bold"/>
+
+                    <HorizontalStackLayout Spacing="10" HorizontalOptions="Start">
+                        <CheckBox IsChecked="{Binding AcceptTerms}" 
+                                  Color="#00b894"
+                                  VerticalOptions="Center"/>
+                        <Label Text="He leído y acepto los términos y condiciones y política de privacidad de Green Coin" 
+                               TextColor="#2d3436"
+                               FontSize="14"
+                               VerticalOptions="Center"
+                               LineBreakMode="WordWrap"/>
+                    </HorizontalStackLayout>
+                </StackLayout>
+
+                <!-- Botón de Registro -->
+                <Button Text="CREAR CUENTA"
+                        Command="{Binding RegisterCommand}"
+                        IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}"
+                        BackgroundColor="#00b894"
+                        TextColor="White"
+                        FontSize="18"
+                        FontAttributes="Bold"
+                        HeightRequest="55"
+                        CornerRadius="12"
+                        Margin="0,20,0,10"/>
+
+                <!-- Enlace para volver al Login -->
+                <HorizontalStackLayout Spacing="5" HorizontalOptions="Center" Margin="0,10,0,20">
+                    <Label Text="¿Ya tienes una cuenta?" 
+                           TextColor="#636e72" 
+                           FontSize="14"
+                           VerticalOptions="Center"/>
+                    <Button Text="Iniciar Sesión aquí"
+                            Command="{Binding GoBackToLoginCommand}"
+                            BackgroundColor="Transparent"
+                            TextColor="#00b894"
+                            FontSize="14"
+                            FontAttributes="Bold"
+                            Padding="0"/>
+                </HorizontalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Indicador de carga -->
+        <ActivityIndicator IsVisible="{Binding IsBusy}"
+                           IsRunning="{Binding IsBusy}"
+                           Color="#00b894"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           WidthRequest="80"
+                           HeightRequest="80"/>
+    </Grid>
+</ContentPage>

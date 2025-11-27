@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GreenCoinMovil.Views.ProfilePage"
+             xmlns:viewmodels="clr-namespace:GreenCoinMovil.ViewModels" 
+             xmlns:Models="clr-namespace:GreenCoinMovil.Models"
+             
+             Title="Perfil"
+             Shell.NavBarIsVisible="False" >
+    <Grid>
+        <!-- Fondo con degradado -->
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#E8F5E8" Offset="0.0"/>
+                <GradientStop Color="#F0F8F0" Offset="0.5"/>
+                <GradientStop Color="#E8F5E8" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <ScrollView>
+            <VerticalStackLayout Spacing="20" Padding="20">
+
+                <!-- Header -->
+                <StackLayout Spacing="15">
+                    <HorizontalStackLayout Spacing="10" HorizontalOptions="Start">
+                        <Frame BackgroundColor="#00b894" 
+                               WidthRequest="50" 
+                               HeightRequest="50" 
+                               CornerRadius="25"
+                               HasShadow="False">
+                            <Label Text="♻️" 
+                                   FontSize="20"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"
+                                   TextColor="White"/>
+                        </Frame>
+                        <VerticalStackLayout Spacing="2">
+                            <Label Text="{Binding Usuario.Nombre, StringFormat='{0}'}" 
+                                   FontSize="18" 
+                                   FontAttributes="Bold"
+                                   TextColor="#2d3436"/>
+                            <Label Text="{Binding NivelActual}" 
+                                   FontSize="14" 
+                                   TextColor="#636e72"/>
+                            <Label Text="Sin dirección especificada" 
+                                   FontSize="12" 
+                                   TextColor="#b2bec3"/>
+                        </VerticalStackLayout>
+                    </HorizontalStackLayout>
+
+                    <Button Text="Editar perfil" 
+                            Command="{Binding NavigateToProfileCommand}"
+                            BackgroundColor="Transparent"
+                            TextColor="#00b894"
+                            FontSize="14"
+                            HorizontalOptions="Start"
+                            Padding="0"/>
+                </StackLayout>
+
+                <!-- Sección Código QR y Puntos -->
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="15">
+                    <!-- Mi código QR -->
+                    <Frame BackgroundColor="White" 
+                           CornerRadius="12" 
+                           Padding="15"
+                           HasShadow="False">
+                        <VerticalStackLayout Spacing="10" HorizontalOptions="Center">
+                            <Label Text="📱" 
+                                   FontSize="24"
+                                   HorizontalOptions="Center"/>
+                            <Label Text="Mi código QR" 
+                                   FontSize="14" 
+                                   FontAttributes="Bold"
+                                   HorizontalOptions="Center"
+                                   TextColor="#2d3436"/>
+                            <Label Text="Escanea en centros de reciclaje para ganar puntos" 
+                                   FontSize="10" 
+                                   HorizontalOptions="Center"
+                                   TextColor="#636e72"
+                                   LineBreakMode="WordWrap"
+                                   HorizontalTextAlignment="Center"/>
+                            <Button Text="Mostrar QR"
+                                    Command="{Binding ShowQRCodeCommand}"
+                                    BackgroundColor="#00b894"
+                                    TextColor="White"
+                                    FontSize="12"
+                                    HeightRequest="30"
+                                    CornerRadius="8"
+                                    Margin="0,5,0,0"/>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <!-- Mis Puntos -->
+                    <Frame Grid.Column="1" 
+                           BackgroundColor="#00b894" 
+                           CornerRadius="12" 
+                           Padding="15"
+                           HasShadow="False">
+                        <VerticalStackLayout Spacing="10" HorizontalOptions="Center">
+                            <Label Text="⭐" 
+                                   FontSize="24"
+                                   HorizontalOptions="Center"
+                                   TextColor="White"/>
+                            <Label Text="Mis Puntos" 
+                                   FontSize="14" 
+                                   FontAttributes="Bold"
+                                   HorizontalOptions="Center"
+                                   TextColor="White"/>
+                            <Label Text="{Binding PuntosTotales, StringFormat='{0} pts'}" 
+                                   FontSize="18" 
+                                   FontAttributes="Bold"
+                                   TextColor="White"
+                                   HorizontalOptions="Center"/>
+                        </VerticalStackLayout>
+                    </Frame>
+                </Grid>
+
+                <!-- Línea divisoria -->
+                <BoxView HeightRequest="1" 
+                         BackgroundColor="#dfe6e9" 
+                         Margin="0,10,0,10"/>
+
+                <!-- Actividad Reciente -->
+                <StackLayout Spacing="15">
+                    <HorizontalStackLayout HorizontalOptions="Fill">
+                        <Label Text="Actividad Reciente" 
+                               FontSize="16" 
+                               FontAttributes="Bold"
+                               TextColor="#2d3436"/>
+                        <Label Text="Ver todo al historial" 
+                               FontSize="12" 
+                               TextColor="#00b894"
+                               HorizontalOptions="EndAndExpand">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ViewAllHistoryCommand}"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </HorizontalStackLayout>
+
+                    <CollectionView ItemsSource="{Binding ActividadesRecientes}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame BackgroundColor="White" 
+                                       CornerRadius="10" 
+                                       Padding="15"
+                                       HasShadow="False"
+                                       Margin="0,0,0,10">
+                                    <HorizontalStackLayout Spacing="10">
+                                        <Frame BackgroundColor="#E8F5E8" 
+                                               WidthRequest="40" 
+                                               HeightRequest="40" 
+                                               CornerRadius="20"
+                                               Padding="0">
+                                            <Label Text="♻️" 
+                                                   FontSize="16"
+                                                   HorizontalOptions="Center"
+                                                   VerticalOptions="Center"/>
+                                        </Frame>
+                                        <VerticalStackLayout Spacing="2" VerticalOptions="Center">
+                                            <Label Text="{Binding Titulo}" 
+                                                   FontSize="14" 
+                                                   FontAttributes="Bold"
+                                                   TextColor="#2d3436"/>
+                                            <Label Text="{Binding FechaFormateada}" 
+                                                   FontSize="12" 
+                                                   TextColor="#636e72"/>
+                                        </VerticalStackLayout>
+                                        <Label Text="{Binding PuntosFormateados}" 
+                                               FontSize="14" 
+                                               FontAttributes="Bold"
+                                               TextColor="#00b894"
+                                               HorizontalOptions="EndAndExpand"
+                                               VerticalOptions="Center"/>
+                                    </HorizontalStackLayout>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Indicador de carga -->
+        <ActivityIndicator IsVisible="{Binding IsBusy}"
+                           IsRunning="{Binding IsBusy}"
+                           Color="#00b894"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           WidthRequest="80"
+                           HeightRequest="80"/>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             
+             xmlns:viewmodels="clr-namespace:GreenCoinMovil.ViewModels"
+             xmlns:converters="clr-namespace:GreenCoinMovil.Converters"
+             
+             x:Class="GreenCoinMovil.Views.LoginPage"
+             Title="Iniciar Sesión"
+             Shell.NavBarIsVisible="False">
+   
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <!-- Converters si los necesitas -->
+            <converters:StringToBoolConverter x:Key="StringToBoolConverter" />
+            <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#E8F5E8" Offset="0.0"/>
+            <GradientStop Color="#F0F8F0" Offset="0.5"/>
+            <GradientStop Color="#E8F5E8" Offset="1.0"/>
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+        <ScrollView VerticalOptions="CenterAndExpand">
+            <StackLayout Spacing="30" Padding="40" VerticalOptions="Center">
+
+                <!-- Logo y Título -->
+                <StackLayout Spacing="20" HorizontalOptions="Center">
+                    <!-- Logo placeholder ecológico -->
+                    <Frame BackgroundColor="#27AE60" 
+                           WidthRequest="80" 
+                           HeightRequest="80" 
+                           CornerRadius="40"
+                           HorizontalOptions="Center"
+                           HasShadow="True">
+                        <Label Text="♻️" 
+                               FontSize="40"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"/>
+                    </Frame>
+
+                    <StackLayout Spacing="10">
+                        <Label Text="GREEN COIN" 
+                               FontSize="28"
+                               FontAttributes="Bold"
+                               TextColor="#2C3E50"
+                               HorizontalOptions="Center"
+                               HorizontalTextAlignment="Center"/>
+
+                        <Label Text="Tu compromiso ecológico recompensado" 
+                               FontSize="14"
+                               TextColor="#7F8C8D"
+                               HorizontalOptions="Center"
+                               HorizontalTextAlignment="Center"/>
+                    </StackLayout>
+                </StackLayout>
+
+                <!-- Mensaje de error -->
+                <Label Text="{Binding ErrorMessage}"
+                       IsVisible="{Binding ErrorMessage, Converter={StaticResource StringToBoolConverter}}"
+                       TextColor="#DC3545"
+                       HorizontalOptions="Center"
+                       FontSize="Small"
+                       Margin="0, -10, 0, 0" />
+
+                <!-- Formulario de Login -->
+                <StackLayout Spacing="20">
+
+                    <!-- Campo Correo Electrónico -->
+                    <StackLayout Spacing="8">
+                        <Label Text="Correo electrónico" 
+                               FontSize="14"
+                               TextColor="#2C3E50"
+                               FontAttributes="Bold"/>
+                        <Frame BackgroundColor="White" 
+                               CornerRadius="12" 
+                               Padding="0"
+                               HasShadow="True">
+                            <Entry Placeholder="Ingresa tu correo electrónico"
+                                   Text="{Binding Email}"
+                                   Keyboard="Email"
+                                   BackgroundColor="Transparent"
+                                   
+                                   ClearButtonVisibility="WhileEditing"/>
+                        </Frame>
+                    </StackLayout>
+
+                    <!-- Campo Contraseña -->
+                    <StackLayout Spacing="8">
+                        <Label Text="Contraseña" 
+                               FontSize="14"
+                               TextColor="#2C3E50"
+                               FontAttributes="Bold"/>
+                        <Frame BackgroundColor="White" 
+                               CornerRadius="12" 
+                               Padding="0"
+                               HasShadow="True">
+                            <Entry Placeholder="Ingresa tu contraseña"
+                                   Text="{Binding Password}"
+                                   IsPassword="True"
+                                   BackgroundColor="Transparent"
+                                   
+                                   ClearButtonVisibility="WhileEditing"/>
+                        </Frame>
+                    </StackLayout>
+
+                    <!-- Botón Iniciar Sesión -->
+                    <Button Text="Iniciar Sesión" 
+                            Command="{Binding LoginCommand}"
+                            IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}"
+                            BackgroundColor="#27AE60"
+                            TextColor="White"
+                            CornerRadius="12"
+                            HeightRequest="50"
+                            FontSize="16"
+                            FontAttributes="Bold"
+                            Margin="0,10,0,0"/>
+
+                </StackLayout>
+
+                <!-- Enlaces adicionales -->
+                <StackLayout Spacing="15">
+
+                    <!-- ¿Olvidaste tu contraseña? -->
+                    <Button Text="¿Olvidaste tu contraseña?"
+                            Command="{Binding ForgotPasswordCommand}"
+                            TextColor="#7F8C8D"
+                            BackgroundColor="Transparent"
+                            BorderWidth="0"
+                            FontSize="14"/>
+
+                    <!-- Registro -->
+                    <StackLayout Orientation="Horizontal" 
+                                 HorizontalOptions="Center" 
+                                 Spacing="5">
+                        <Label Text="¿No tienes una cuenta?" 
+                               TextColor="#7F8C8D"
+                               FontSize="14"
+                               VerticalOptions="Center"/>
+                        <Button Text="Regístrate ahora"
+                                Command="{Binding NavigateToRegisterCommand}"
+                                TextColor="#27AE60"
+                                BackgroundColor="Transparent"
+                                BorderWidth="0"
+                                FontSize="14"
+                                FontAttributes="Bold"/>
+                    </StackLayout>
+
+                </StackLayout>
+
+                <StackLayout Spacing="10">
+                    <Button Text="🔍 Probar Conexión"
+                            Command="{Binding TestConnectionCommand}"
+                            BackgroundColor="#17A2B8"
+                            TextColor="White"
+                            CornerRadius="8"
+                            HeightRequest="40"
+                            FontSize="14"/>
+
+                    <Button Text="🧪 Probar API Completa (Registro + Login + Dashboard + Historial)"
+                            Command="{Binding TestApiFlowCommand}"
+                            BackgroundColor="#FF6B35"
+                            TextColor="White"
+                            CornerRadius="8"
+                            HeightRequest="40"
+                            FontSize="12"/>
+
+                    <Button Text="Entrar como Admin (Test)"
+                            Command="{Binding IrAlAdminCommand}"
+                            BackgroundColor="Black"
+                            TextColor="White"
+                            CornerRadius="8"
+                            HeightRequest="40"
+                            FontSize="14"/>
+                </StackLayout>
+
+            </StackLayout>
+            
+            
+        </ScrollView>
+
+        <!-- Indicador de carga -->
+        <ActivityIndicator IsVisible="{Binding IsBusy}"
+                           IsRunning="{Binding IsBusy}"
+                           Color="#27AE60"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           BackgroundColor="#CCFFFFFF"
+                           WidthRequest="80"
+                           HeightRequest="80"/>
+
+    </Grid>
+    
+    
+</ContentPage>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="GreenCoinMovil.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+
+    xmlns:views="clr-namespace:GreenCoinMovil.Views"
+
+    Title="GreenCoinMovil"
+
+    Shell.FlyoutBehavior="Flyout"
+    Shell.NavBarIsVisible="True"
+
+    >
+
+    <!-- Flyout Header -->
+    <Shell.FlyoutHeader>
+        <Frame BackgroundColor="#2E7D32" Padding="20" CornerRadius="0" HasShadow="False">
+            <StackLayout>
+                <Label Text="🌱 GreenCoin" TextColor="White" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
+                <Label Text="Recicla y gana puntos" TextColor="White" FontSize="14" HorizontalOptions="Center" Opacity="0.8"/>
+            </StackLayout>
+        </Frame>
+    </Shell.FlyoutHeader>
+
+    <!-- Flyout Footer -->
+    <Shell.FlyoutFooter>
+        <Frame BackgroundColor="#424242" Padding="15" CornerRadius="0" HasShadow="False">
+            <Label Text="v1.0.0" TextColor="White" FontSize="12" HorizontalOptions="Center"/>
+        </Frame>
+    </Shell.FlyoutFooter>
+
+    <!-- Flyout Menu Items -->
+    <FlyoutItem Title="🏠 Perfil" Route="DashboardPage">
+        <ShellContent Title="Dashboard"
+                      ContentTemplate="{DataTemplate views:DashboardPage}"
+                      Route="DashboardPage" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="📱 Reciclar" Route="RecyclingTab">
+        <ShellContent Title="Reciclaje"
+                      ContentTemplate="{DataTemplate views:RecyclePage}"
+                      Route="RecyclingTab" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="📊 Historial" Route="HistoryPage">
+        <ShellContent Title="Historial"
+                      ContentTemplate="{DataTemplate views:HistoryPage}"
+                      Route="HistoryPage" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="🏆 Logros" Route="AchievementsTab">
+        <ShellContent Title="Logros"
+                      ContentTemplate="{DataTemplate views:AchievementsPage}"
+                      Route="AchievementsTab" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="⚙️ Configuración" Route="SettingsTab">
+        <ShellContent Title="Configuración"
+                      ContentTemplate="{DataTemplate views:SettingsPage}"
+                      Route="SettingsTab" />
+    </FlyoutItem>
+
+    <!-- Opciones de Administrador (visibles para todos los usuarios) -->
+    <FlyoutItem Title="🔍 Validación"
+                Route="ValidationTab">
+        <ShellContent Title="Validación"
+                      ContentTemplate="{DataTemplate views:AdminValidationPage}"
+                      Route="ValidationTab" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="🛠️ Panel Admin"
+                Route="AdminTab">
+        <ShellContent Title="Admin"
+                      ContentTemplate="{DataTemplate views:AdminDashboardPage}"
+                      Route="AdminTab" />
+    </FlyoutItem>
+
+    <!-- Acción de cerrar sesión -->
+    <MenuItem Text="🚪 Cerrar Sesión"
+              Command="{Binding LogoutCommand}" />
+
+    <!-- Páginas de autenticación (solo rutas, sin menú) -->
+    <ShellContent Title="Login"
+                  ContentTemplate="{DataTemplate views:LoginPage}"
+                  Route="LoginPage"
+                  Shell.NavBarIsVisible="False" />
+
+    <ShellContent Title="Registro"
+                  ContentTemplate="{DataTemplate views:RegisterPage}"
+                  Route="RegisterPage" />
+
+    <!-- Navegación por pestañas (solo para usuarios autenticados) -->
+    <TabBar Route="MainTabs">
+        <Tab Title="Perfil">
+            <ShellContent Title="Perfil"
+                          ContentTemplate="{DataTemplate views:DashboardPage}"
+                          Route="DashboardTab" />
+        </Tab>
+
+        <Tab Title="Reciclaje">
+            <ShellContent Title="Reciclaje"
+                          ContentTemplate="{DataTemplate views:RecyclePage}"
+                          Route="RecyclingTab" />
+        </Tab>
+
+        <Tab Title="Logros">
+            <ShellContent Title="Logros"
+                          ContentTemplate="{DataTemplate views:AchievementsPage}"
+                          Route="AchievementsTab" />
+        </Tab>
+
+        <Tab Title="Configuración">
+            <ShellContent Title="Configuración"
+                          ContentTemplate="{DataTemplate views:SettingsPage}"
+                          Route="SettingsTab" />
+        </Tab>
+
+        <Tab Title="Validación">
+            <ShellContent Title="Validación"
+                          ContentTemplate="{DataTemplate views:AdminValidationPage}"
+                          Route="ValidationTab" />
+        </Tab>
+
+        <Tab Title="Admin">
+            <ShellContent Title="Admin"
+                          ContentTemplate="{DataTemplate views:AdminDashboardPage}"
+                          Route="AdminTab" />
+        </Tab>
+    </TabBar>
+</Shell>

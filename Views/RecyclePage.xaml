@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GreenCoinMovil.Views.RecyclePage"
+               Title="Reciclaje"
+             Shell.NavBarIsVisible="True">
+
+
+    <Grid>
+        <!-- Fondo de gradiente -->
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#E8F5E8" Offset="0.0"/>
+                <GradientStop Color="#F0F8F0" Offset="0.5"/>
+                <GradientStop Color="#E8F5E8" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <!-- Contenido principal -->
+        <ScrollView>
+            <VerticalStackLayout Spacing="25" Padding="20">
+
+                <!-- Header -->
+                <StackLayout Spacing="15">
+                    <Label Text="Registrar Reciclaje" 
+                           FontSize="24" 
+                           FontAttributes="Bold"
+                           TextColor="#2d3436"/>
+                    <Label Text="Escanea el código QR o toma una foto del material" 
+                           FontSize="14" 
+                           TextColor="#636e72"/>
+                </StackLayout>
+                
+                <!-- Agrega esto en tu Header o donde prefieras -->
+                <StackLayout Spacing="10" Orientation="Horizontal" HorizontalOptions="Center">
+                    <Button Text="📋 Estado Validaciones"
+            Command="{Binding VerEstadoValidacionesCommand}"
+            BackgroundColor="#74b9ff"
+            TextColor="White"
+            CornerRadius="20"
+            HeightRequest="40"
+            FontSize="12"
+            Padding="15,0"/>
+
+                    <Button Text="🔄 Verificar Ahora"
+            Command="{Binding VerificarEstadoValidacionesCommand}"
+            BackgroundColor="#00b894"
+            TextColor="White"
+            CornerRadius="20"
+            HeightRequest="40"
+            FontSize="12"
+            Padding="15,0"/>
+
+                    <Button Text="📊 Historial"
+            Command="{Binding VerHistorialCompletoCommand}"
+            BackgroundColor="#a29bfe"
+            TextColor="White"
+            CornerRadius="20"
+            HeightRequest="40"
+            FontSize="12"
+            Padding="15,0"/>
+                </StackLayout>
+
+                <!-- Indicador de notificaciones -->
+                <Frame IsVisible="{Binding TieneNotificaciones}"
+       BackgroundColor="#00b894"
+       CornerRadius="20"
+       Padding="10,5"
+       HorizontalOptions="End"
+       VerticalOptions="Start"
+       Margin="0,10,10,0">
+                    <Label Text="{Binding ValidacionesPendientes, StringFormat='⏳ {0}'}"
+           TextColor="White"
+           FontSize="12"
+           FontAttributes="Bold"/>
+                </Frame>
+
+
+                <!-- Opciones de Escaneo -->
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="15">
+
+                    <!-- Escanear QR -->
+                    <Frame BackgroundColor="White" 
+                           CornerRadius="12" 
+                           Padding="20"
+                           HasShadow="True">
+                        <VerticalStackLayout Spacing="15" HorizontalOptions="Center">
+                            <Label Text="📱" 
+                                   FontSize="32"
+                                   HorizontalOptions="Center"/>
+                            <Label Text="Escanear QR" 
+                                   FontSize="16" 
+                                   FontAttributes="Bold"
+                                   HorizontalOptions="Center"
+                                   TextColor="#2d3436"/>
+                            <Label Text="Escanea el código QR del centro de reciclaje" 
+                                   FontSize="12" 
+                                   TextColor="#636e72"
+                                   HorizontalOptions="Center"
+                                   LineBreakMode="WordWrap"
+                                   HorizontalTextAlignment="Center"/>
+                            <Button Text="Escanear QR"
+                                    Command="{Binding ScanQRCommand}"
+                                    BackgroundColor="#00b894"
+                                    TextColor="White"
+                                    FontSize="14"
+                                    HeightRequest="45"
+                                    CornerRadius="8"/>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <!-- Tomar Foto -->
+                    <Frame Grid.Column="1"
+                           BackgroundColor="White" 
+                           CornerRadius="12" 
+                           Padding="20"
+                           HasShadow="True">
+                        <VerticalStackLayout Spacing="15" HorizontalOptions="Center">
+                            <Label Text="📸" 
+                                   FontSize="32"
+                                   HorizontalOptions="Center"/>
+                            <Label Text="Tomar Foto" 
+                                   FontSize="16" 
+                                   FontAttributes="Bold"
+                                   HorizontalOptions="Center"
+                                   TextColor="#2d3436"/>
+                            <Label Text="Toma una foto del material a reciclar" 
+                                   FontSize="12" 
+                                   TextColor="#636e72"
+                                   HorizontalOptions="Center"
+                                   LineBreakMode="WordWrap"
+                                   HorizontalTextAlignment="Center"/>
+                            <Button Text="Abrir Cámara"
+                                    Command="{Binding TakePhotoCommand}"
+                                    BackgroundColor="#00b894"
+                                    TextColor="White"
+                                    FontSize="14"
+                                    HeightRequest="45"
+                                    CornerRadius="8"/>
+                        </VerticalStackLayout>
+                    </Frame>
+                </Grid>
+
+                <!-- Resultado del Escaneo -->
+                <Frame IsVisible="{Binding HasScanResult}"
+                       BackgroundColor="White" 
+                       CornerRadius="12" 
+                       Padding="20"
+                       HasShadow="True">
+                    <VerticalStackLayout Spacing="15">
+                        <Label Text="✅ Escaneo Exitoso" 
+                               FontSize="16" 
+                               FontAttributes="Bold"
+                               TextColor="#00b894"/>
+                        <Label Text="{Binding ScanResult}" 
+                               FontSize="14" 
+                               TextColor="#2d3436"/>
+                        <Button Text="Registrar Reciclaje"
+                                Command="{Binding RegisterRecyclingCommand}"
+                                BackgroundColor="#00b894"
+                                TextColor="White"
+                                FontSize="14"
+                                HeightRequest="45"
+                                CornerRadius="8"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Foto Tomada - Versión con Envío al Administrador -->
+                <Frame IsVisible="{Binding HasPhoto}"
+                       BackgroundColor="White" 
+                       CornerRadius="12" 
+                       Padding="15"
+                       HasShadow="True">
+                    <VerticalStackLayout Spacing="15">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Grid.Column="0"
+                                   Text="📸 Foto para Administrador" 
+                                   FontSize="16" 
+                                   FontAttributes="Bold"
+                                   TextColor="#00b894"
+                                   VerticalOptions="Center"/>
+                            <Label Grid.Column="1"
+                                   Text="👁️ El admin verá esta foto"
+                                   FontSize="10"
+                                   TextColor="#636e72"
+                                   VerticalOptions="Center"/>
+                        </Grid>
+
+                        <Frame BackgroundColor="#E8F5E8"
+                               CornerRadius="8"
+                               Padding="10"
+                               HasShadow="False">
+                            <VerticalStackLayout Spacing="5">
+                                <Label Text="📋 El administrador verá:"
+                                       FontSize="12"
+                                       FontAttributes="Bold"
+                                       TextColor="#2d3436"/>
+                                <Label Text="• Tu foto del material"
+                                       FontSize="11"
+                                       TextColor="#636e72"/>
+
+                                <StackLayout Orientation="Horizontal" Spacing="5">
+                                    <Label Text="• Material:" FontSize="11" TextColor="#636e72"/>
+                                    <Label Text="{Binding NombreMaterialSeleccionado, TargetNullValue='(Debes seleccionar uno)'}" 
+                                           FontSize="11" 
+                                           FontAttributes="Bold" 
+                                           TextColor="#0984e3"/>
+                                </StackLayout>
+
+                                <Label Text="• La hora de envío"
+                                       FontSize="11"
+                                       TextColor="#636e72"/>
+                            </VerticalStackLayout>
+                        </Frame>
+
+                        <Border Stroke="#00b894"
+                                StrokeThickness="2"
+                                StrokeShape="RoundRectangle 8"
+                                Background="#F8F9FA"
+                                HeightRequest="200"
+                                HorizontalOptions="Fill">
+                            <Image Source="{Binding CapturedPhoto}" 
+                                   Aspect="AspectFit"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"
+                                   MaximumHeightRequest="180"
+                                   MaximumWidthRequest="180"/>
+                        </Border>
+
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                            <Button Grid.Column="0"
+                                    Text="📁 Seleccionar Material"
+                                    Command="{Binding UsePhotoCommand}"
+                                    BackgroundColor="#636e72" 
+                                    TextColor="White"
+                                    CornerRadius="8"
+                                    HeightRequest="45"
+                                    FontSize="11"/>
+
+                            <Button Grid.Column="1"
+        Text="📤 Enviar al Admin"
+        Command="{Binding RegisterRecyclingWithPhotoCommand}"
+        IsEnabled="{Binding IsMaterialSelected}" 
+        TextColor="White"
+        CornerRadius="8"
+        HeightRequest="45"
+        FontSize="12">
+
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="BackgroundColor" Value="#BDC3C7"/>
+
+                                        <Style.Triggers>
+                                            <DataTrigger TargetType="Button" 
+                             Binding="{Binding IsMaterialSelected}" 
+                             Value="True">
+                                                <Setter Property="BackgroundColor" Value="#0984e3"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                        </Grid>
+
+                        <Label Text="* Selecciona un material para enviar"
+                               IsVisible="{Binding IsMaterialSelected, Converter={StaticResource InverseBoolConverter}}"
+                               FontSize="10"
+                               TextColor="Red"
+                               HorizontalOptions="Center"/>
+
+                        <Label Text="{Binding AccionPendiente}"
+                               FontSize="12"
+                               TextColor="#00b894"
+                               HorizontalOptions="Center"
+                               FontAttributes="Bold"
+                               HorizontalTextAlignment="Center"/>
+
+                        <Button Text="🔄 Tomar Otra Foto"
+                                Command="{Binding RetakePhotoCommand}"
+                                BackgroundColor="Transparent"
+                                TextColor="#636e72"
+                                HeightRequest="40"
+                                FontSize="12"/>
+                    </VerticalStackLayout>
+                </Frame>
+                <!-- Materiales Disponibles -->
+                <StackLayout Spacing="15">
+                    <Label Text="Materiales para Reciclar" 
+                           FontSize="18" 
+                           FontAttributes="Bold"
+                           TextColor="#2d3436"/>
+
+                    <CollectionView ItemsSource="{Binding Materiales}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame BackgroundColor="White" 
+                                       CornerRadius="10" 
+                                       Padding="15"
+                                       HasShadow="True"
+                                       Margin="0,0,0,10">
+                                    <Grid ColumnDefinitions="Auto,*,Auto" 
+                                          ColumnSpacing="15">
+
+                                        <!-- Icono -->
+                                        <Frame Grid.Column="0"
+                                               BackgroundColor="{Binding Color}" 
+                                               WidthRequest="50" 
+                                               HeightRequest="50" 
+                                               CornerRadius="25"
+                                               Padding="0">
+                                            <Label Text="{Binding Icono}" 
+                                                   FontSize="20"
+                                                   HorizontalOptions="Center"
+                                                   VerticalOptions="Center"/>
+                                        </Frame>
+
+                                        <!-- Información -->
+                                        <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                            <Label Text="{Binding Tipo}" 
+                                                   FontSize="14" 
+                                                   FontAttributes="Bold"
+                                                   TextColor="#2d3436"/>
+                                            <Label Text="{Binding Descripcion}" 
+                                                   FontSize="12" 
+                                                   TextColor="#636e72"/>
+                                        </VerticalStackLayout>
+
+                                        <!-- Puntos -->
+                                        <Label Grid.Column="2"
+                                               Text="{Binding Puntos, StringFormat='+{0} pts'}" 
+                                               FontSize="14" 
+                                               FontAttributes="Bold"
+                                               TextColor="#00b894"
+                                               VerticalOptions="Center"/>
+                                    </Grid>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Indicador de carga (superpuesto) -->
+        <ActivityIndicator IsVisible="{Binding IsBusy}"
+                           IsRunning="{Binding IsBusy}"
+                           Color="#00b894"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           WidthRequest="80"
+                           HeightRequest="80"/>
+    </Grid>
+
+</ContentPage>

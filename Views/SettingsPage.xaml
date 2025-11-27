@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GreenCoinMovil.Views.SettingsPage"
+             Title="Configuración"
+             Shell.NavBarIsVisible="True">
+
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#E8F5E8" Offset="0.0"/>
+                <GradientStop Color="#F0F8F0" Offset="0.5"/>
+                <GradientStop Color="#E8F5E8" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <ScrollView>
+            <VerticalStackLayout Spacing="0" Padding="0">
+
+                <!-- Header -->
+                <Frame BackgroundColor="#00b894" 
+                       CornerRadius="0" 
+                       Padding="20"
+                       HasShadow="False">
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Configuración" 
+                               FontSize="24" 
+                               FontAttributes="Bold"
+                               TextColor="White"/>
+                        <Label Text="Personaliza tu experiencia en GreenCoin" 
+                               FontSize="14" 
+                               TextColor="White"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Opciones de Configuración -->
+                <VerticalStackLayout Spacing="0" Padding="15">
+
+                    <!-- Cuenta -->
+                    <Frame BackgroundColor="White" 
+                           CornerRadius="12" 
+                           Padding="0"
+                           HasShadow="False"
+                           Margin="0,0,0,15">
+                        <VerticalStackLayout Spacing="0">
+                            <StackLayout Padding="15" BackgroundColor="#E8F5E8">
+                                <Label Text="Cuenta" 
+                                       FontSize="16" 
+                                       FontAttributes="Bold"
+                                       TextColor="#2d3436"/>
+                            </StackLayout>
+
+                            <VerticalStackLayout Spacing="0">
+                                <!-- Editar Perfil -->
+                                <Grid Padding="15" 
+                                      ColumnDefinitions="*,Auto">
+                                    <VerticalStackLayout Grid.Column="0" Spacing="2">
+                                        <Label Text="Editar Perfil" 
+                                               FontSize="14" 
+                                               TextColor="#2d3436"/>
+                                        <Label Text="Actualiza tu información personal" 
+                                               FontSize="12" 
+                                               TextColor="#636e72"/>
+                                    </VerticalStackLayout>
+                                    <Label Grid.Column="1" 
+                                           Text="›" 
+                                           FontSize="18"
+                                           TextColor="#b2bec3"
+                                           VerticalOptions="Center">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding EditarPerfilCommand}"/>
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                </Grid>
+
+                                <BoxView HeightRequest="1" BackgroundColor="#dfe6e9"/>
+
+                                <!-- Cambiar Contraseña -->
+                                <Grid Padding="15" 
+                                      ColumnDefinitions="*,Auto">
+                                    <VerticalStackLayout Grid.Column="0" Spacing="2">
+                                        <Label Text="Cambiar Contraseña" 
+                                               FontSize="14" 
+                                               TextColor="#2d3436"/>
+                                        <Label Text="Actualiza tu contraseña de acceso" 
+                                               FontSize="12" 
+                                               TextColor="#636e72"/>
+                                    </VerticalStackLayout>
+                                    <Label Grid.Column="1" 
+                                           Text="›" 
+                                           FontSize="18"
+                                           TextColor="#b2bec3"
+                                           VerticalOptions="Center">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding CambiarContrasenaCommand}"/>
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                </Grid>
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <!-- Notificaciones -->
+                    <Frame BackgroundColor="White" 
+                           CornerRadius="12" 
+                           Padding="0"
+                           HasShadow="False"
+                           Margin="0,0,0,15">
+                        <VerticalStackLayout Spacing="0">
+                            <StackLayout Padding="15" BackgroundColor="#E8F5E8">
+                                <Label Text="Notificaciones" 
+                                       FontSize="16" 
+                                       FontAttributes="Bold"
+                                       TextColor="#2d3436"/>
+                            </StackLayout>
+
+                            <!-- Notificaciones Principales -->
+                            <Grid Padding="15" 
+                                  ColumnDefinitions="*,Auto">
+                                <VerticalStackLayout Grid.Column="0" Spacing="2">
+                                    <Label Text="Notificaciones" 
+                                           FontSize="14" 
+                                           TextColor="#2d3436"/>
+                                    <Label Text="Activar/desactivar todas las notificaciones" 
+                                           FontSize="12" 
+                                           TextColor="#636e72"/>
+                                </VerticalStackLayout>
+                                <Switch Grid.Column="1" 
+                                        IsToggled="{Binding NotificacionesActivadas}"
+                                        HorizontalOptions="End"
+                                        VerticalOptions="Center"/>
+                            </Grid>
+
+                            <BoxView HeightRequest="1" BackgroundColor="#dfe6e9"/>
+
+                            <!-- Notificaciones Email -->
+                            <Grid Padding="15" 
+                                  ColumnDefinitions="*,Auto">
+                                <VerticalStackLayout Grid.Column="0" Spacing="2">
+                                    <Label Text="Notificaciones por Email" 
+                                           FontSize="14" 
+                                           TextColor="#2d3436"/>
+                                    <Label Text="Recibir notificaciones en tu correo" 
+                                           FontSize="12" 
+                                           TextColor="#636e72"/>
+                                </VerticalStackLayout>
+                                <Switch Grid.Column="1" 
+                                        IsToggled="{Binding NotificacionesEmail}"
+                                        HorizontalOptions="End"
+                                        VerticalOptions="Center"/>
+                            </Grid>
+
+                            <BoxView HeightRequest="1" BackgroundColor="#dfe6e9"/>
+
+                            <!-- Notificaciones Push -->
+                            <Grid Padding="15" 
+                                  ColumnDefinitions="*,Auto">
+                                <VerticalStackLayout Grid.Column="0" Spacing="2">
+                                    <Label Text="Notificaciones Push" 
+                                           FontSize="14" 
+                                           TextColor="#2d3436"/>
+                                    <Label Text="Alertas en tu dispositivo" 
+                                           FontSize="12" 
+                                           TextColor="#636e72"/>
+                                </VerticalStackLayout>
+                                <Switch Grid.Column="1" 
+                                        IsToggled="{Binding NotificacionesPush}"
+                                        HorizontalOptions="End"
+                                        VerticalOptions="Center"/>
+                            </Grid>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <!-- Aplicación -->
+                    <Frame BackgroundColor="White" 
+                           CornerRadius="12" 
+                           Padding="0"
+                           HasShadow="False"
+                           Margin="0,0,0,15">
+                        <VerticalStackLayout Spacing="0">
+                            <StackLayout Padding="15" BackgroundColor="#E8F5E8">
+                                <Label Text="Aplicación" 
+                                       FontSize="16" 
+                                       FontAttributes="Bold"
+                                       TextColor="#2d3436"/>
+                            </StackLayout>
+
+                            <VerticalStackLayout Spacing="0">
+                                <!-- Sincronizar Datos -->
+                                <Grid Padding="15" 
+                                      ColumnDefinitions="*,Auto">
+                                    <VerticalStackLayout Grid.Column="0" Spacing="2">
+                                        <Label Text="Sincronizar Datos" 
+                                               FontSize="14" 
+                                               TextColor="#2d3436"/>
+                                        <Label Text="Actualizar información con el servidor" 
+                                               FontSize="12" 
+                                               TextColor="#636e72"/>
+                                    </VerticalStackLayout>
+                                    <Label Grid.Column="1" 
+                                           Text="⟳" 
+                                           FontSize="18"
+                                           TextColor="#00b894"
+                                           VerticalOptions="Center">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding SincronizarDatosCommand}"/>
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                </Grid>
+
+                                <BoxView HeightRequest="1" BackgroundColor="#dfe6e9"/>
+
+                                <!-- Exportar Datos -->
+                                <Grid Padding="15" 
+                                      ColumnDefinitions="*,Auto">
+                                    <VerticalStackLayout Grid.Column="0" Spacing="2">
+                                        <Label Text="Exportar Datos" 
+                                               FontSize="14" 
+                                               TextColor="#2d3436"/>
+                                        <Label Text="Descargar tu información personal" 
+                                               FontSize="12" 
+                                               TextColor="#636e72"/>
+                                    </VerticalStackLayout>
+                                    <Label Grid.Column="1" 
+                                           Text="⤓" 
+                                           FontSize="18"
+                                           TextColor="#00b894"
+                                           VerticalOptions="Center">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding ExportarDatosCommand}"/>
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                </Grid>
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <!-- Acerca de -->
+                    <Frame BackgroundColor="White" 
+                           CornerRadius="12" 
+                           Padding="0"
+                           HasShadow="False"
+                           Margin="0,0,0,15">
+                        <VerticalStackLayout Spacing="0">
+                            <StackLayout Padding="15" BackgroundColor="#E8F5E8">
+                                <Label Text="Acerca de" 
+                                       FontSize="16" 
+                                       FontAttributes="Bold"
+                                       TextColor="#2d3436"/>
+                            </StackLayout>
+
+                            <VerticalStackLayout Spacing="0">
+                                <!-- Términos y Condiciones -->
+                                <Grid Padding="15" 
+                                      ColumnDefinitions="*,Auto">
+                                    <Label Grid.Column="0" 
+                                           Text="Términos y Condiciones" 
+                                           FontSize="14" 
+                                           TextColor="#2d3436"/>
+                                    <Label Grid.Column="1" 
+                                           Text="›" 
+                                           FontSize="18"
+                                           TextColor="#b2bec3"
+                                           VerticalOptions="Center">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding VerTerminosCondicionesCommand}"/>
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                </Grid>
+
+                                <BoxView HeightRequest="1" BackgroundColor="#dfe6e9"/>
+
+                                <!-- Política de Privacidad -->
+                                <Grid Padding="15" 
+                                      ColumnDefinitions="*,Auto">
+                                    <Label Grid.Column="0" 
+                                           Text="Política de Privacidad" 
+                                           FontSize="14" 
+                                           TextColor="#2d3436"/>
+                                    <Label Grid.Column="1" 
+                                           Text="›" 
+                                           FontSize="18"
+                                           TextColor="#b2bec3"
+                                           VerticalOptions="Center">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding VerPoliticaPrivacidadCommand}"/>
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                </Grid>
+
+                                <BoxView HeightRequest="1" BackgroundColor="#dfe6e9"/>
+
+                                <!-- Contactar Soporte -->
+                                <Grid Padding="15" 
+                                      ColumnDefinitions="*,Auto">
+                                    <Label Grid.Column="0" 
+                                           Text="Contactar Soporte" 
+                                           FontSize="14" 
+                                           TextColor="#2d3436"/>
+                                    <Label Grid.Column="1" 
+                                           Text="›" 
+                                           FontSize="18"
+                                           TextColor="#b2bec3"
+                                           VerticalOptions="Center">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding ContactarSoporteCommand}"/>
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                </Grid>
+
+                                <BoxView HeightRequest="1" BackgroundColor="#dfe6e9"/>
+
+                                <!-- Acerca de -->
+                                <Grid Padding="15" 
+                                      ColumnDefinitions="*,Auto">
+                                    <Label Grid.Column="0" 
+                                           Text="Acerca de GreenCoin" 
+                                           FontSize="14" 
+                                           TextColor="#2d3436"/>
+                                    <Label Grid.Column="1" 
+                                           Text="›" 
+                                           FontSize="18"
+                                           TextColor="#b2bec3"
+                                           VerticalOptions="Center">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding VerAcercaDeCommand}"/>
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                </Grid>
+
+                                <BoxView HeightRequest="1" BackgroundColor="#dfe6e9"/>
+
+                                <!-- Versión -->
+                                <Grid Padding="15" 
+                                      ColumnDefinitions="*,Auto">
+                                    <Label Grid.Column="0" 
+                                           Text="Versión de la App" 
+                                           FontSize="14" 
+                                           TextColor="#2d3436"/>
+                                    <Label Grid.Column="1" 
+                                           Text="{Binding VersionApp}" 
+                                           FontSize="14"
+                                           TextColor="#636e72"
+                                           VerticalOptions="Center"/>
+                                </Grid>
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <!-- Acciones Peligrosas -->
+                    <Frame BackgroundColor="White" 
+                           CornerRadius="12" 
+                           Padding="0"
+                           HasShadow="False"
+                           Margin="0,0,0,15">
+                        <VerticalStackLayout Spacing="0">
+                            <StackLayout Padding="15" BackgroundColor="#FFF5F5">
+                                <Label Text="Zona Peligrosa" 
+                                       FontSize="16" 
+                                       FontAttributes="Bold"
+                                       TextColor="#e74c3c"/>
+                            </StackLayout>
+
+                            <VerticalStackLayout Spacing="0">
+                                <!-- Eliminar Cuenta -->
+                                <Grid Padding="15" 
+                                      ColumnDefinitions="*,Auto">
+                                    <VerticalStackLayout Grid.Column="0" Spacing="2">
+                                        <Label Text="Eliminar Cuenta" 
+                                               FontSize="14" 
+                                               TextColor="#e74c3c"/>
+                                        <Label Text="Eliminar permanentemente tu cuenta y datos" 
+                                               FontSize="12" 
+                                               TextColor="#e74c3c"/>
+                                    </VerticalStackLayout>
+                                    <Label Grid.Column="1" 
+                                           Text="🗑️" 
+                                           FontSize="16"
+                                           TextColor="#e74c3c"
+                                           VerticalOptions="Center">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding EliminarCuentaCommand}"/>
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                </Grid>
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <!-- Cerrar Sesión -->
+                    <Button Text="Cerrar Sesión"
+                            Command="{Binding CerrarSesionCommand}"
+                            BackgroundColor="#e74c3c"
+                            TextColor="White"
+                            FontSize="16"
+                            FontAttributes="Bold"
+                            HeightRequest="50"
+                            CornerRadius="10"
+                            Margin="0,20,0,0"/>
+
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Indicador de carga -->
+        <ActivityIndicator IsVisible="{Binding IsBusy}"
+                           IsRunning="{Binding IsBusy}"
+                           Color="#00b894"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           WidthRequest="80"
+                           HeightRequest="80"/>
+    </Grid>
+</ContentPage>
